@@ -2,6 +2,10 @@ package com.olson1998.messaging;
 
 public class Inbound<M extends MessagePattern> {
 
+    private String tenantId;
+
+    private final String id;
+
     private final String tenantKey;
 
     private final String topic;
@@ -9,6 +13,14 @@ public class Inbound<M extends MessagePattern> {
     private final String replyTopic;
 
     private final M message;
+
+    public String getId() {
+        return id;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
 
     public String getTenantKey() {
         return tenantKey;
@@ -26,7 +38,16 @@ public class Inbound<M extends MessagePattern> {
         return message;
     }
 
-    public Inbound(String tenantKey, String topic, String replyTopic, M message) {
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public Inbound(String id, String tenantKey, String topic, String replyTopic, M message) {
+        if(id == null){
+            throw new NullPointerException("id can not be null");
+        }else {
+            this.id = id;
+        }
         this.tenantKey = tenantKey;
         if(topic == null){
             throw new NullPointerException("topic can not be null");
@@ -45,7 +66,12 @@ public class Inbound<M extends MessagePattern> {
         }
     }
 
-    public Inbound(String tenantKey, String topic, M message) {
+    public Inbound(String id, String tenantKey, String topic, M message) {
+        if(id == null){
+            throw new NullPointerException("id can not be null");
+        }else {
+            this.id = id;
+        }
         this.tenantKey = tenantKey;
         if(topic == null){
             throw new NullPointerException("topic can not be null");
