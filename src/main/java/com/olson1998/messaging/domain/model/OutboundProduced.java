@@ -1,6 +1,6 @@
-package com.olson1998.messaging;
+package com.olson1998.messaging.domain.model;
 
-public class Outbound<M extends MessagePattern> {
+public class OutboundProduced<M extends EncodedMessage> {
 
     private final String topic;
 
@@ -26,7 +26,7 @@ public class Outbound<M extends MessagePattern> {
         return waitingForAcknowledgment;
     }
 
-    public Outbound(String topic, M message, boolean async, boolean waitingForAcknowledgment) {
+    public OutboundProduced(String topic, M message, boolean async, boolean waitingForAcknowledgment) {
         if(topic == null){
             throw new NullPointerException("topic can not be null");
         }else {
@@ -37,7 +37,7 @@ public class Outbound<M extends MessagePattern> {
         this.waitingForAcknowledgment = waitingForAcknowledgment;
     }
 
-    public Outbound(String topic, M message, boolean async) {
+    public OutboundProduced(String topic, M message, boolean async) {
         if(topic == null){
             throw new NullPointerException("topic can not be null");
         }else {
@@ -48,7 +48,7 @@ public class Outbound<M extends MessagePattern> {
         this.waitingForAcknowledgment = false;
     }
 
-    public Outbound(String topic, M message) {
+    public OutboundProduced(String topic, M message) {
         if(topic == null){
             throw new NullPointerException("topic can not be null");
         }else {
@@ -59,7 +59,7 @@ public class Outbound<M extends MessagePattern> {
         this.waitingForAcknowledgment = false;
     }
 
-    public Outbound(String topic) {
+    public OutboundProduced(String topic) {
         if(topic == null){
             throw new NullPointerException("topic can not be null");
         }else {

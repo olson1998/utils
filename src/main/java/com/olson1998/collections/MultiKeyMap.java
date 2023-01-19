@@ -1,57 +1,32 @@
 package com.olson1998.collections;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
-public interface MultiKeyMap<T, S, H> {
-
-    H get(T key1, S key2);
-
-    Collection <H> get(T key1);
-
-    MultiKeyMap<T, S, H> get(BiPredicate<T, Map<S, H>> obtainCommand);
-
-    Set<H> getUnique(T key1);
-
-    MultiKeyMap<T, S, H> findKeys(Set<H> values);
-
-    void append(T key1, S key2);
-
-    void append(T key1, S key2, H value);
-
-    void append(T key1, Map<S, H> values);
-
-    void append(MultiKeyMap<T, S, H> multiKeyMap);
-
-    void remove(T key1, S key2, H value);
-
-    H replace(T key1, S key2, H value);
-
-    Map<S, H> replace(T key1, H value);
-
-    void remove(T key1, H value);
-
-    void removeAll();
-
-    Set<S> keys(T key1);
-
-    Set<T> keys(Set<S> key2);
-
-    Set<T> keys();
-
-    int size();
+public interface MultiKeyMap<T, S, H> extends Map<T, Map<S, H>>{
 
     Integer size(T key1);
 
-    boolean contains(T key1, S key2, H value);
+    Boolean isEmpty(T key1);
 
-    boolean contains(T key1, H value);
+    Boolean containsKey(T key1, S key2);
 
-    boolean contains(H value);
+    Boolean containsValue(T key1, H value);
 
-    void forEach(BiConsumer<T, Map<S, H>> command);
+    H get(T key1, S key2);
+
+    MultiKeyMap<T, S, H> find(Predicate<T> key1Command, Predicate<S> key2Command, Predicate<H> valueCommand);
+
+    Map<T, S> find(Predicate<H> command);
+
+    Collection<H> getValues(T key1);
+
+    Map<S, H> put(T key1, S key2, H value);
+
+    void put(MultiKeyMap<T, S, H> multiKeyMap);
+
+    @Override
+    String toString();
 }
