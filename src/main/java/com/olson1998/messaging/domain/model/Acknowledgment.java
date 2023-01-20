@@ -1,6 +1,6 @@
 package com.olson1998.messaging.domain.model;
 
-public interface Acknowledgment<M extends EncodedMessage> {
+public interface Acknowledgment<M extends EncodedOutbound> {
 
     int getPartition();
 

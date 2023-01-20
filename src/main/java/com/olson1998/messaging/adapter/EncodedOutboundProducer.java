@@ -1,13 +1,17 @@
 package com.olson1998.messaging.adapter;
 
+import com.olson1998.messaging.domain.model.Acknowledgment;
 import com.olson1998.messaging.domain.model.EncodedOutbound;
 
 import java.util.Collection;
 
-public abstract class EncodedOutboundProducer<M extends EncodedOutbound>{
+public interface EncodedOutboundProducer<M extends EncodedOutbound<String>>{
 
-    abstract void send(M message);
+    void send(M message);
 
-    abstract void send(Collection<M> messages);
+    void send(Collection<M> messages);
 
+    Acknowledgment<M> sendAsync(M message);
+
+    Collection<Acknowledgment<M>> sendAsync(Collection<M> messages);
 }
