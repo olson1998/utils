@@ -5,15 +5,15 @@ import com.olson1998.messaging.domain.model.Message;
 
 public class ReceivedInbound<P> implements Inbound<P> {
 
-    private final long receivingTime;
-
     private final String topic;
 
     private final String replyTopic;
 
-    private String id;
+    private final String tenantKey;
 
-    private String tenantKey;
+    private final long receivingTime;
+
+    private String id;
 
     private String command;
 

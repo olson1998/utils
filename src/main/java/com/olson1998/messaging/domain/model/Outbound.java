@@ -4,15 +4,13 @@ public interface Outbound<P> {
 
     String getId();
 
-    String getTenantKey();
-
     String getCommand();
+
+    String getTenantKey();
 
     String getClaimingService();
 
     String getTopic();
-
-    String getReplyTopic();
 
     P getPayload();
 
