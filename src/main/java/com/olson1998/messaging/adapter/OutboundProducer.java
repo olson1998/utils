@@ -19,5 +19,5 @@ public interface OutboundProducer<O extends Outbound<P>, M extends Message<P>, P
 
     CompletableFuture<Acknowledgment<M, P>> sendAsync(O outbound);
 
-    CompletableFuture<Collection<Acknowledgment<M, P>>> sendAsync(Collection<O> outbounds);
+    Collection<CompletableFuture<Acknowledgment<M, P>>> sendAsync(Collection<O> outbounds);
 }
