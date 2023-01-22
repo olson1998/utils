@@ -2,6 +2,8 @@ package com.olson1998.messaging.domain.model;
 
 public interface Acknowledgment<M extends Message<P>, P> {
 
+    String getTopic();
+
     int getPartition();
 
     boolean hasTimestamp();
@@ -16,5 +18,5 @@ public interface Acknowledgment<M extends Message<P>, P> {
 
     int getSerializedValueSize();
 
-    M getEncodedMessage();
+    M getSentMessage();
 }

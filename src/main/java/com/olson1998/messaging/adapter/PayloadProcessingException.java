@@ -9,7 +9,7 @@ public class PayloadProcessingException extends RuntimeException {
         return "Payload processing exception, reason: " + error.getMessage();
     }
 
-    protected PayloadProcessingException(Exception error) {
+    public PayloadProcessingException(Exception error) {
         this.error = error;
     }
 

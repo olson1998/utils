@@ -13,7 +13,7 @@ public abstract class InboundListener<E extends EncodedMessage, M extends Messag
 
     private final Function<E, M> messageDecodingFunction;
 
-    private final BiFunction<Exception, E, M> decodingErrorHandler;
+    private final BiFunction<E, Exception, RuntimeException> decodingErrorHandler;
 
     public void receive(String topic, String replyTopic, String tenantKey, E message){
         var decoded = decodeMessage(message);
@@ -25,13 +25,13 @@ public abstract class InboundListener<E extends EncodedMessage, M extends Messag
         try{
             return messageDecodingFunction.apply(message);
         }catch (Exception error){
-            return decodingErrorHandler.apply(error, message);
+            throw decodingErrorHandler.apply(message, error);
         }
     }
 
     public InboundListener(MessageProcessor<P> messageProcessor,
                            Function<E, M> messageDecodingFunction,
-                           BiFunction<Exception, E, M> decodingErrorHandler) {
+                           BiFunction<E, Exception, RuntimeException> decodingErrorHandler) {
         this.messageProcessor = messageProcessor;
         this.messageDecodingFunction = messageDecodingFunction;
         this.decodingErrorHandler = decodingErrorHandler;
@@ -41,7 +41,7 @@ public abstract class InboundListener<E extends EncodedMessage, M extends Messag
                            Function<E, M> messageDecodingFunction) {
         this.messageProcessor = messageProcessor;
         this.messageDecodingFunction = messageDecodingFunction;
-        this.decodingErrorHandler = (error, message) -> {
+        this.decodingErrorHandler = (message, error) -> {
           throw new PayloadProcessingException(error);
         };
     }
