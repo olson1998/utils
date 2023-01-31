@@ -6,7 +6,7 @@ public interface Inbound<M extends Message<P>, P> {
 
     Map<String, String> getHeaders();
 
-    M message();
+    M getMessage();
 
     long getSendingTime();
 
