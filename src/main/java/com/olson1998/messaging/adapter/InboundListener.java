@@ -9,9 +9,9 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public abstract class InboundListener<E extends EncodedMessage, M extends Message<P>, I extends Inbound<P>, P> {
+public abstract class InboundListener<E extends EncodedMessage, M extends Message<P>, I extends Inbound<M, P>, P> {
 
-    private final MessageProcessor<I, P> messageProcessor;
+    private final MessageProcessor<I, M, P> messageProcessor;
     private final Function<E, M> messageDecodingFunction;
 
     private final BiFunction<Map<String, String>, M, I> inboundFactory;
@@ -37,7 +37,7 @@ public abstract class InboundListener<E extends EncodedMessage, M extends Messag
         }
     }
 
-    public InboundListener(MessageProcessor<I, P> messageProcessor,
+    public InboundListener(MessageProcessor<I, M, P> messageProcessor,
                            Function<E, M> messageDecodingFunction,
                            BiFunction<Map<String, String>, M, I> inboundFactory,
                            BiFunction<Exception, E, PayloadProcessingException> payloadDeserializingErrorHandler) {
@@ -47,7 +47,7 @@ public abstract class InboundListener<E extends EncodedMessage, M extends Messag
         this.payloadDeserializingErrorHandler = payloadDeserializingErrorHandler;
     }
 
-    public InboundListener(MessageProcessor<I, P> messageProcessor,
+    public InboundListener(MessageProcessor<I, M, P> messageProcessor,
                            Function<E, M> messageDecodingFunction,
                            BiFunction<Map<String, String>, M, I> inboundFactory) {
         this.messageProcessor = messageProcessor;
