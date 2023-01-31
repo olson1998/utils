@@ -4,9 +4,5 @@ public interface Message<T> {
 
     String getId();
 
-    String getClaimingService();
-
-    String getCommand();
-
     T getPayload();
 }
