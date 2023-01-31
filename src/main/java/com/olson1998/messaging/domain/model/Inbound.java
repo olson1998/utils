@@ -4,17 +4,9 @@ public interface Inbound<P> {
 
     String getId();
 
-    String getTenantKey();
-
-    String getCommand();
-
-    String getClaimingService();
-
-    String getTopic();
-
-    String getReplyTopic();
-
     P getPayload();
+
+    long getSendingTime();
 
     long getReceivingTime();
 }

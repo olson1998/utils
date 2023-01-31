@@ -2,7 +2,7 @@ package com.olson1998.messaging.domain.service;
 
 import com.olson1998.messaging.domain.model.Inbound;
 
-public interface MessageProcessor<P> {
+public interface MessageProcessor {
 
-    void process(Inbound<P> inbound);
+    <P> void process(Inbound<P> inbound);
 }

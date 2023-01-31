@@ -2,6 +2,7 @@ package com.olson1998.messaging.adapter;
 
 import com.olson1998.messaging.domain.model.EncodedMessage;
 import com.olson1998.messaging.domain.model.Message;
+import com.olson1998.messaging.domain.service.InboundFactory;
 import com.olson1998.messaging.domain.service.MessageProcessor;
 
 import java.util.function.BiFunction;
@@ -9,15 +10,17 @@ import java.util.function.Function;
 
 public abstract class InboundListener<E extends EncodedMessage, M extends Message<P>, P> {
 
-    private final MessageProcessor<P> messageProcessor;
+    private final MessageProcessor messageProcessor;
+
+    private final InboundFactory inboundFactory;
 
     private final Function<E, M> messageDecodingFunction;
 
     private final BiFunction<E, Exception, RuntimeException> decodingErrorHandler;
 
-    public void receive(String topic, String replyTopic, String tenantKey, E message){
+    public void receive(String topic, String tenantKey, long sendingTime, E message){
         var decoded = decodeMessage(message);
-        var inbound = new ReceivedInbound<>(topic, replyTopic, tenantKey, decoded);
+        var inbound = inboundFactory.fabricate(topic, tenantKey, sendingTime, System.currentTimeMillis(), decoded);
         messageProcessor.process(inbound);
     }
 
@@ -29,20 +32,22 @@ public abstract class InboundListener<E extends EncodedMessage, M extends Messag
         }
     }
 
-    public InboundListener(MessageProcessor<P> messageProcessor,
+    public InboundListener(MessageProcessor messageProcessor,
+                           InboundFactory inboundFactory,
                            Function<E, M> messageDecodingFunction,
                            BiFunction<E, Exception, RuntimeException> decodingErrorHandler) {
         this.messageProcessor = messageProcessor;
+        this.inboundFactory = inboundFactory;
         this.messageDecodingFunction = messageDecodingFunction;
         this.decodingErrorHandler = decodingErrorHandler;
     }
 
-    public InboundListener(MessageProcessor<P> messageProcessor,
+    public InboundListener(MessageProcessor messageProcessor,
+                           InboundFactory inboundFactory,
                            Function<E, M> messageDecodingFunction) {
         this.messageProcessor = messageProcessor;
+        this.inboundFactory = inboundFactory;
         this.messageDecodingFunction = messageDecodingFunction;
-        this.decodingErrorHandler = (message, error) -> {
-          throw new PayloadProcessingException(error);
-        };
+        this.decodingErrorHandler = (encoded, error) -> new PayloadProcessingException(error);
     }
 }
